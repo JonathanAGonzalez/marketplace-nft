@@ -3,5 +3,5 @@ type TUnOrderListProps = {
 };
 
 export const UnOrderList = ({ children }: TUnOrderListProps) => {
-  return <ul className='flex gap-4'>{children}</ul>;
+  return <ul className='flex gap-4 items-center'>{children}</ul>;
 };

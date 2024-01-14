@@ -1,19 +1,26 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import {Logo} from '../components/atomic/atoms/Logo';
-import {Menu} from '../components/atomic/organisms/Menu';
+import { CarrouselHeroBanner } from '../components/atomic/organisms/CarrouselHeroBanner';
+import ButtonAnimated from '../components/atomic/atoms/buttons/ButtonAnimated.astro';
+import { NftsLists } from '../components/atomic/organisms/NftsLists';
 ---
 
-<Layout title="Welcome to Astro.">
-	<main class='bg-general min-h-screen bg-cover bg-center w-full'>
-		<header>
-			<Logo/>
-			<Menu/>
-		</header>
-		<h1>Test</h1>
-	</main>
+<Layout title='Welcome to Marketplace NFTs Jona.'>
+  <main>
+    <CarrouselHeroBanner client:only='react'>
+      <ButtonAnimated title='MINT' href='/explore' />
+    </CarrouselHeroBanner>
+    <NftsLists client:only='react' />
+  </main>
 </Layout>
 
-<style>
-	
-</style>
+<script>
+  import { Buffer } from 'buffer';
+  import process from 'process';
+  window.Buffer = Buffer;
+  window.process = process;
+  let global;
+  if (global === undefined) {
+    global = window;
+  }
+</script>

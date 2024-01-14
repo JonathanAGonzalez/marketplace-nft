@@ -1,0 +1,23 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { Detail } from '../../components/atomic/organisms/Detail';
+const { id } = Astro.params;
+import 'react-image-gallery/styles/css/image-gallery.css';
+---
+
+<Layout title='Welcome to Marketplace NFTs Jona.'>
+  <main class='text-white'>
+    <Detail id={Number(id)} client:only='react' />
+  </main>
+</Layout>
+
+<style is:global>
+  .image-gallery-image {
+    border-radius: 8px;
+  }
+</style>
+
+<script>
+  import { Buffer } from 'buffer';
+  window.Buffer = Buffer;
+</script>

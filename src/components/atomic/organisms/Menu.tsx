@@ -1,5 +1,8 @@
 import { Link } from '../atoms/Link';
 import { UnOrderList } from '../atoms/UnorderList';
+import { useAuthStore } from '../../../stores/auth.store';
+import { truncateEthAddress } from '../../../utils/truncate';
+import { SpinnerLoading } from '../atoms/SpinnerLoading/SpinnerLoading';
 
 const itemsMenu = [
   {
@@ -22,14 +25,14 @@ const itemsMenu = [
     name: 'Contact',
     path: '/contact',
   },
-  {
-    id: 5,
-    name: 'Connect Wallet',
-    path: '/connect-wallet',
-  },
 ];
 
 export const Menu = () => {
+  const login = useAuthStore((store) => store.loginUser);
+  const user = useAuthStore((store) => store.user);
+  const isLoading = useAuthStore((store) => store.isLoading);
+  const logoutUser = useAuthStore((store) => store.logoutUser);
+
   return (
     <nav>
       <UnOrderList>
@@ -38,6 +41,29 @@ export const Menu = () => {
             <Link href={path}>{name}</Link>
           </li>
         ))}
+        {user ? (
+          <button
+            onClick={() => logoutUser()}
+            className='p-2 rounded-lg bg-blue-500 text-white hover:text-white'
+          >
+            {truncateEthAddress(user)}
+          </button>
+        ) : (
+          <button
+            onClick={login}
+            disabled={isLoading}
+            className='p-2 rounded-lg bg-blue-500 text-white hover:text-white'
+          >
+            {isLoading ? (
+              <>
+                <SpinnerLoading />
+                Loading...
+              </>
+            ) : (
+              'Wallet Connect'
+            )}
+          </button>
+        )}
       </UnOrderList>
     </nav>
   );

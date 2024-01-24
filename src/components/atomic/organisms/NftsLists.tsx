@@ -1,9 +1,15 @@
+import { useEffect } from 'react';
 import { Title } from '../atoms/title/Title.tsx';
 import { Card } from './Card/Card.tsx';
-import useStoreNfts from '../../../stores/Nfts.store';
+import useBlockchainStore from 'src/stores/blockchain.store';
 
 export const NftsLists = () => {
-  const nfts = useStoreNfts((store) => store.nfts);
+  const nfts = useBlockchainStore((store) => store.nfts);
+  const getAllNfts = useBlockchainStore((store) => store.getAllNfts);
+
+  useEffect(() => {
+    getAllNfts();
+  }, []);
 
   return (
     <section className='max-w-[1400px] p-4 mx-auto'>
@@ -14,8 +20,8 @@ export const NftsLists = () => {
       </div>
 
       <div className='flex flex-wrap gap-4 justify-center'>
-        {nfts.map((nft) => (
-          <Card nft={nft} key={nft.id} />
+        {nfts.map((nft, i) => (
+          <Card nft={nft} key={i} />
         ))}
       </div>
     </section>

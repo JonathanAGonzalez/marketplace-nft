@@ -5,13 +5,7 @@ export type TNft = {
   description: string;
   price: number;
   stock: number;
-  image: Image;
-};
-
-export type Image = {
-  src: string;
-  alt: string;
-  extension: string;
+  image: string;
 };
 
 export type ImagesCarrousel = {

@@ -32,8 +32,7 @@ export const pinFileToIPFS = async (
         headers: {
           accept: 'application/json',
           'content-type': 'application/json',
-          authorization:
-            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiJiYmY1YWQ2MC0xZDk0LTQ1MGQtOTMwZS0yMzhlN2JjMzdkNzgiLCJlbWFpbCI6ImpvbmF0aGFuZ0Bob3RtYWlsLmNvbS5hciIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwaW5fcG9saWN5Ijp7InJlZ2lvbnMiOlt7ImlkIjoiRlJBMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfSx7ImlkIjoiTllDMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfV0sInZlcnNpb24iOjF9LCJtZmFfZW5hYmxlZCI6ZmFsc2UsInN0YXR1cyI6IkFDVElWRSJ9LCJhdXRoZW50aWNhdGlvblR5cGUiOiJzY29wZWRLZXkiLCJzY29wZWRLZXlLZXkiOiI3MmFjNThjZDVmNWM4YTJiYzQ0NiIsInNjb3BlZEtleVNlY3JldCI6IjkyNjg2YzZlNTI3MjgxOTBkMTIwNTI2Mzc2YzZkM2RmZDkxY2NhZTg2NzdlYzYzNDZlZDlkYmY3MWNiNzYwMWUiLCJpYXQiOjE3MDU1MDE3MzN9.nP6QaEjulXIEHqZYbesLkqdOk3PpyutwqwVPzN7dQts',
+          authorization: `Bearer ${import.meta.env.PUBLIC_PINATA_API_KEY}`,
         },
         body: pinataMetadataJSON,
       };

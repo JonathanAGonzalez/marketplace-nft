@@ -1,0 +1,11 @@
+---
+import { Form } from '../../components/Form';
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title='Dashboard '>
+  <div class='min-h-screen border bg-blue-strong'>
+    <h1 class='text-4xl text-white'>Dashboard</h1>
+    <Form client:only='react' />
+  </div>
+</Layout>

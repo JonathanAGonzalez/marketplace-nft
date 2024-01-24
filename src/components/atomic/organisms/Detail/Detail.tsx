@@ -1,55 +1,57 @@
 import { useEffect } from 'react';
 import ImageGallery from 'react-image-gallery';
-import useStoreNfts from '../../../../stores/Nfts.store';
 import { DetailContent } from '../../molecules/Detail/DetailContent';
 import { ButtonCarrousel } from '../../atoms/buttons/ButtonCarrousel';
-
+import useBlockchainStore from 'src/stores/blockchain.store';
 type DetailProps = {
   id: number;
 };
 
 export const Detail = ({ id }: DetailProps) => {
-  const getDetail = useStoreNfts((store) => store.getDetailNft);
-  const detailNft = useStoreNfts((store) => store.detailNft);
+  const getDetailNft = useBlockchainStore((store) => store.getDetailNft);
+  const nftDetail = useBlockchainStore((store) => store.nftDetail);
 
   useEffect(() => {
-    getDetail(id);
+    getDetailNft(id);
   }, []);
 
-  if (!detailNft)
+  if (!nftDetail)
     return (
       <div>
         <h3>The Nft not found</h3>
       </div>
     );
 
-  const modelArrayImages = detailNft.imagesCarrousel.map((image) => {
-    return {
-      original: image.src,
-      thumbnail: image.src,
-    };
-  });
-
   return (
-    <div className='grid grid-cols-1 md:grid-cols-2 grid-rows-2 md:grid-rows-2'>
-      <ImageGallery
-        renderLeftNav={(onclick) => {
-          return (
-            <div onClick={onclick} className='absolute top-[50%] left-5 z-20'>
-              <ButtonCarrousel side='left' />
+    <div className='grid grid-cols-1 md:grid-cols-2 border'>
+      <div className='border max-h-[700px] object-contain'>
+        <ImageGallery
+          showThumbnails={false}
+          renderLeftNav={(onclick) => {
+            return (
+              <div onClick={onclick} className='absolute top-[50%] left-5 z-20'>
+                <ButtonCarrousel side='left' />
+              </div>
+            );
+          }}
+          renderRightNav={(onclick) => (
+            <div onClick={onclick} className='absolute top-[50%] right-5 z-20'>
+              <ButtonCarrousel side='right' />
             </div>
-          );
-        }}
-        renderRightNav={(onclick) => (
-          <div onClick={onclick} className='absolute top-[50%] right-5 z-20'>
-            <ButtonCarrousel side='right' />
-          </div>
-        )}
-        autoPlay
-        showPlayButton={false}
-        items={modelArrayImages}
-      />
-      <DetailContent nft={detailNft} />
+          )}
+          autoPlay
+          showPlayButton={false}
+          additionalClass='md:h-[700px] lg:h-[700px]'
+          items={[
+            {
+              original: nftDetail.image,
+              thumbnail: nftDetail.image,
+            },
+          ]}
+        />
+      </div>
+
+      <DetailContent nft={nftDetail} />
     </div>
   );
 };

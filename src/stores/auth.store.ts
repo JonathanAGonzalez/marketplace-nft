@@ -7,8 +7,10 @@ import {
 } from '../web3auth';
 
 type AuthStore = {
-  user: any | null;
+  user: string | null;
+  provider: null;
   isLoading: boolean;
+  web3Auth: any;
   loginUser: () => void;
   logoutUser: () => void;
   initWeb3auth: () => void;
@@ -19,11 +21,13 @@ export const useAuthStore = create<AuthStore>()(
     (set) => ({
       user: null,
       isLoading: false,
+      provider: null,
+      web3Auth: null,
       loginUser: async () => {
         try {
           set({ isLoading: true });
-          const user = await loginWithWeb3auth();
-          set({ user });
+          const { account, provider, web3Auth } = await loginWithWeb3auth();
+          set({ user: account, provider, web3Auth });
         } catch (err) {
           console.log(err);
         } finally {
@@ -35,7 +39,7 @@ export const useAuthStore = create<AuthStore>()(
       },
       logoutUser: async () => {
         await logoutWithWeb3auth();
-        set({ user: null });
+        set({ user: null, provider: null });
       },
     }),
     { name: 'authStore' }

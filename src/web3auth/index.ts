@@ -24,6 +24,7 @@ const web3Auth = new Web3Auth({
 
 export const initWeb3Auth = async () => {
   try {
+    web3Auth.clearCache();
     const metamaskAdapter = new MetamaskAdapter({
       clientId,
       sessionTime: 3600,
@@ -35,7 +36,7 @@ export const initWeb3Auth = async () => {
       },
     });
     metamaskAdapter.setAdapterSettings({
-      sessionTime: 86400,
+      // sessionTime: 86400,
       chainConfig: {
         chainNamespace: CHAIN_NAMESPACES.EIP155,
         chainId: '0xaa36a7',
@@ -118,16 +119,29 @@ export const initWeb3Auth = async () => {
               name: 'kakao',
               showOnModal: false,
             },
+            //disable torus button
+            torus: {
+              name: 'torus',
+              showOnModal: false,
+            },
           },
         },
       },
     });
+    const userInfo = await web3Auth.getUserInfo();
   } catch (error) {
     console.log(error);
   }
 };
 
-export const loginWithWeb3auth = async () => {
+type TLoginWithWeb3auth = {
+  account: string;
+  provider: any;
+  web3Auth: any;
+};
+
+export const loginWithWeb3auth = async (): Promise<TLoginWithWeb3auth> => {
+  const initialObject = { account: '', provider: null, web3Auth: null };
   try {
     const web3authProvider = await web3Auth.connect();
 
@@ -136,15 +150,30 @@ export const loginWithWeb3auth = async () => {
         const accounts: any = await web3authProvider?.request({
           method: 'eth_requestAccounts',
         });
-        if (!accounts) return console.log('accounts is null');
+        if (!accounts) return initialObject;
 
         console.log('connected');
-        return accounts[0];
+
+        return {
+          account: accounts[0],
+          provider: web3authProvider,
+          web3Auth: web3Auth.provider,
+        };
       } catch (error) {
         console.log(error);
       }
     }
-    return web3authProvider;
+    return initialObject;
+  } catch (error) {
+    console.log(error);
+    return initialObject;
+  }
+};
+
+export const getUserInfoWeb3auth = async () => {
+  try {
+    const userInfo = await web3Auth.getUserInfo();
+    return userInfo;
   } catch (error) {
     console.log(error);
   }
@@ -153,6 +182,7 @@ export const loginWithWeb3auth = async () => {
 export const logoutWithWeb3auth = async () => {
   try {
     await web3Auth.logout();
+    window.localStorage.clear();
   } catch (error) {
     console.log(error);
   }

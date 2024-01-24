@@ -13,14 +13,3 @@ import { NftsLists } from '../components/atomic/organisms/NftsLists';
     <NftsLists client:only='react' />
   </main>
 </Layout>
-
-<script>
-  import { Buffer } from 'buffer';
-  import process from 'process';
-  window.Buffer = Buffer;
-  window.process = process;
-  let global;
-  if (global === undefined) {
-    global = window;
-  }
-</script>

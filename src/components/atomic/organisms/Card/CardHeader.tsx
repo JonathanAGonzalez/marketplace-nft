@@ -22,11 +22,12 @@ export const CardHeader = ({
 
   return (
     <header className='relative min-h-[230px] rounded-t-lg cursor-pointer'>
-      <figure className='overflow-hidden rounded-t-lg'>
+      <figure className='overflow-hidden rounded-t-lg max-h-[320px]'>
         <img
           onClick={handleRedirect}
-          src={nft.image.src}
-          alt={nft.image.alt}
+          src={nft.image}
+          alt={nft.name}
+          title={nft.name}
           className='transition-transform transform-gpu duration-200 hover:scale-110'
         />
         <button className='absolute right-4 top-5 rounded-md bg-white p-2 text-[#222] '>

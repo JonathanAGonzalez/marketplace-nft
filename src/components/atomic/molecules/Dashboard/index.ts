@@ -1,1 +1,1 @@
-export * from './Sidebard.dashboard';
+export * from './Sidebar.dashboard';

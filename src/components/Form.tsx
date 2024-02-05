@@ -1,6 +1,11 @@
 import { useState } from 'react';
 import { pinFileToIPFS } from '../blockchain/events/pinFileToIPFS';
+import { Input } from './atomic/atoms/Input';
+import { Textarea } from './atomic/atoms/Textarea';
+import { InputFile } from './atomic/molecules/InputFile';
+import { ButtonWithCircleHover } from './atomic/atoms/buttons/ButtonWithCircleHover';
 import useBlockchainStore from 'src/stores/blockchain.store';
+import { Spinner } from './atomic/atoms/Spinner';
 
 type TStateValues = {
   name: string;
@@ -20,6 +25,7 @@ export const Form = () => {
   const [values, setValues] = useState<TStateValues>(initialValues);
   const [hashIPFS, setHashIpfs] = useState<string>('');
   const mintNft = useBlockchainStore((store) => store.mintNft);
+  const isLoading = useBlockchainStore((store) => store.isLoading);
 
   const handleValues = async (event: any) => {
     const { name, value } = event.target;
@@ -53,52 +59,28 @@ export const Form = () => {
   };
 
   return (
-    <form
-      className='flex flex-col gap-4 max-w-[400px] border'
-      onSubmit={handleSubmit}
-    >
-      <div className='flex flex-col'>
-        <label htmlFor='name' className='text-white text-xl'>
-          Name NFT
-        </label>
-        <input type='text' name='name' id='name' onChange={handleValues} />
-      </div>
+    <form className='flex flex-col gap-4 p-4 ' onSubmit={handleSubmit}>
+      <Input id='name' label='Name NFT' type='text' onChange={handleValues} />
+      <Input id='price' label='Price' type='text' onChange={handleValues} />
+      <InputFile
+        file={values.file}
+        label='Add File'
+        id='file'
+        onChange={handleValues}
+      />
 
-      <div className='flex flex-col'>
-        <label htmlFor='name' className='text-white text-xl'>
-          PRICE
-        </label>
-        <input type='text' name='price' id='price' onChange={handleValues} />
-      </div>
-
-      <div className='flex flex-col'>
-        {values.file && (
-          <img
-            src={window.URL.createObjectURL(values.file)}
-            alt='foto'
-            className='h-[100px] w-[100px]'
-          />
-        )}
-        <label htmlFor='name' className='text-white text-xl'>
-          ADD FILE
-        </label>
-        <input type='file' name='file' onChange={handleValues} />
-      </div>
-      <div className='flex flex-col'>
-        <label htmlFor='name' className='text-white text-xl'>
-          Description
-        </label>
-        <textarea
-          name='description'
-          id=''
-          cols={30}
-          rows={10}
-          onChange={handleValues}
-        ></textarea>
-      </div>
-      <button className='border p-4 bg-purple-950 rounded-lg' type='submit'>
-        Agregar NFT
-      </button>
+      <Textarea id='description' label='Description' onChange={handleValues} />
+      <ButtonWithCircleHover
+        text={
+          isLoading ? (
+            <>
+              <Spinner /> Loading...
+            </>
+          ) : (
+            'Mint NFT'
+          )
+        }
+      />
     </form>
   );
 };

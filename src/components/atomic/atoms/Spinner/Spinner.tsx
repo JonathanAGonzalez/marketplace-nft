@@ -1,4 +1,4 @@
-export const SpinnerLoading = () => {
+export const Spinner = () => {
   return (
     <svg
       aria-hidden='true'

@@ -39,6 +39,7 @@ async function getMetadataPinata(tokenURI: string) {
 type TStoreBlockchain = {
   nfts: any[];
   nftDetail: any;
+  isLoading: boolean;
   getAllNfts: () => void;
   mintNft: (tokenURI: string, price: string) => void;
   getDetailNft: (id: number) => void;
@@ -50,13 +51,13 @@ const useBlockchainStore = create<TStoreBlockchain>()(
     (set) => ({
       nfts: [],
       nftDetail: null,
+      isLoading: false,
       getAllNfts: async () => {
         try {
+          set({ isLoading: true });
           const contract = await getContractMarketPlace();
           const coreNfts = await contract.getAllNftsOnSale();
-
           const nfts = [];
-
           for (let i = 0; i < coreNfts.length; i++) {
             if (Number(coreNfts[i]) !== 0) {
               const responseNft = await contract.getNftItem(
@@ -71,20 +72,25 @@ const useBlockchainStore = create<TStoreBlockchain>()(
         } catch (error) {
           console.log(error);
           console.log('Error to get all nfts');
+        } finally {
+          set({ isLoading: false });
         }
       },
 
       mintNft: async (tokenURI: string, price: string) => {
         if (!tokenURI) return;
-        const contract = await getContractMarketPlace();
-
-        const priceFormatted = parsePriceToWei(Number(price), 'gwei');
-        const tx = await contract
-          .mintItem(tokenURI, priceFormatted)
-          .then((res) => {
-            console.log({ res }, 'transaction OK');
-          })
-          .catch((err) => console.log(err));
+        try {
+          set({ isLoading: true });
+          const contract = await getContractMarketPlace();
+          const priceFormatted = parsePriceToWei(Number(price), 'gwei');
+          const tx = await contract.mintItem(tokenURI, priceFormatted);
+          await tx.wait();
+        } catch (error) {
+          console.log(error);
+          console.log('Error to mint nft');
+        } finally {
+          set({ isLoading: false });
+        }
       },
 
       burnNft: async (id: number) => {
@@ -107,7 +113,13 @@ const useBlockchainStore = create<TStoreBlockchain>()(
         });
       },
     }),
-    { name: 'nfts' }
+    {
+      name: 'nfts',
+      partialize: (state) =>
+        Object.fromEntries(
+          Object.entries(state).filter(([key]) => !['isLoading'].includes(key))
+        ),
+    }
   )
 );
 

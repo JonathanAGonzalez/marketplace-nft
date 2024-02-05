@@ -43,10 +43,7 @@ export const useAuthStore = create<AuthStore>()(
       name: 'authStore',
       partialize: (state) =>
         Object.fromEntries(
-          Object.entries(state).filter(
-            ([key]) =>
-              !['isLoading'].includes(key) && !['web3Auth'].includes(key)
-          )
+          Object.entries(state).filter(([key]) => !['isLoading'].includes(key))
         ),
     }
   )

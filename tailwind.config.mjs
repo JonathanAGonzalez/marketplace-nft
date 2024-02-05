@@ -8,6 +8,7 @@ export default {
     extend: {
       backgroundImage: {
         general: 'url("/images/bg.jpg")',
+        dashboard: 'url("/images/dashboard/bg.jpg")',
       },
       colors: {
         'primary-purple': '#9d6be5',

@@ -13,7 +13,6 @@ type AuthStore = {
   web3Auth: any;
   loginUser: () => void;
   logoutUser: () => void;
-  initWeb3auth: () => void;
 };
 
 export const useAuthStore = create<AuthStore>()(
@@ -25,6 +24,7 @@ export const useAuthStore = create<AuthStore>()(
       web3Auth: null,
       loginUser: async () => {
         try {
+          await initWeb3Auth();
           set({ isLoading: true });
           const { account, provider, web3Auth } = await loginWithWeb3auth();
           set({ user: account, provider, web3Auth });
@@ -34,14 +34,20 @@ export const useAuthStore = create<AuthStore>()(
           set({ isLoading: false });
         }
       },
-      initWeb3auth: async () => {
-        await initWeb3Auth();
-      },
       logoutUser: async () => {
         await logoutWithWeb3auth();
         set({ user: null, provider: null });
       },
     }),
-    { name: 'authStore' }
+    {
+      name: 'authStore',
+      partialize: (state) =>
+        Object.fromEntries(
+          Object.entries(state).filter(
+            ([key]) =>
+              !['isLoading'].includes(key) && !['web3Auth'].includes(key)
+          )
+        ),
+    }
   )
 );

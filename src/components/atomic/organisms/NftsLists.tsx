@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
 import { Title } from '../atoms/title/Title.tsx';
 import { Card } from './Card/Card.tsx';
-import useBlockchainStore from 'src/stores/blockchain.store';
+import useBlockchainStore from 'src/stores/blockchain.store.ts';
 
 export const NftsLists = () => {
   const nfts = useBlockchainStore((store) => store.nfts);
+  const isLoading = useBlockchainStore((store) => store.isLoading);
   const getAllNfts = useBlockchainStore((store) => store.getAllNfts);
 
   useEffect(() => {

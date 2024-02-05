@@ -2,7 +2,7 @@ import { Link } from '../atoms/Link';
 import { UnOrderList } from '../atoms/UnorderList';
 import { useAuthStore } from '../../../stores/auth.store';
 import { truncateEthAddress } from '../../../utils/truncate';
-import { SpinnerLoading } from '../atoms/SpinnerLoading/SpinnerLoading';
+import { Spinner } from '../atoms/Spinner';
 
 const itemsMenu = [
   {
@@ -56,7 +56,7 @@ export const Menu = () => {
           >
             {isLoading ? (
               <>
-                <SpinnerLoading />
+                <Spinner />
                 Loading...
               </>
             ) : (

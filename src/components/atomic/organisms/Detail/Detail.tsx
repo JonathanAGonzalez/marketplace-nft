@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import ImageGallery from 'react-image-gallery';
 import { DetailContent } from '../../molecules/Detail/DetailContent';
 import { ButtonCarrousel } from '../../atoms/buttons/ButtonCarrousel';
-import useBlockchainStore from 'src/stores/blockchain.store';
+import useBlockchainStore from 'src/stores/useBlockchainStore';
 type DetailProps = {
   id: number;
 };

@@ -9,3 +9,12 @@ import Layout from '../../layouts/Layout.astro';
     <Form client:only='react' />
   </div>
 </Layout>
+<script type='module'>
+  const {
+    state: { user },
+  } = JSON.parse(window.localStorage.getItem('authStore'));
+
+  if (!user) {
+    window.location.href = '/';
+  }
+</script>
